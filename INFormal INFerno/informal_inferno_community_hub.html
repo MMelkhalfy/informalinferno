@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFormal INFerno | Non-Toxic Gaming Community</title>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            dark: '#07070a',
+                            card: 'rgba(18, 18, 26, 0.75)',
+                            orange: '#ff5500',
+                            amber: '#ffaa00',
+                            red: '#e62e00',
+                            glow: '#ff4500'
+                        },
+                        fiverr: '#1dbf73'
+                    },
+                    fontFamily: {
+                        heading: ['Orbitron', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'fire-glow': '0 0 25px rgba(255, 85, 0, 0.4)',
+                        'fire-intense': '0 0 50px rgba(255, 69, 0, 0.7)',
+                        'fiverr-glow': '0 0 25px rgba(29, 191, 115, 0.4)',
+                        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="relative min-h-screen flex flex-col bg-[#060608] text-gray-100">
+
+    <canvas id="flameCanvas"></canvas>
+
+    <header class="sticky top-0 z-50 glass-panel border-b border-orange-900/30 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+
+            <!-- Logo Brand -->
+            <a href="#" class="flex items-center gap-3 group">
+                <img src="assets/INFBackground.png" alt="INFormal INFerno Logo"
+                    class="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-110 fire-pulse">
+                <div class="flex flex-col">
+                    <span
+                        class="heading-font font-black text-lg sm:text-xl tracking-wider text-white group-hover:text-amber-400 transition-colors">
+                        INFORMAL <span class="gradient-text-fire">INFERNO</span>
+                    </span>
+                    <span
+                        class="text-[10px] sm:text-xs text-orange-400 font-semibold tracking-widest uppercase -mt-1">Non-Toxic
+                        Gaming Hub</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm">
+                <a href="#about" class="text-gray-300 hover:text-orange-400 transition-colors">About Us</a>
+                <a href="#pledge" class="text-gray-300 hover:text-orange-400 transition-colors">Non-Toxic Pledge</a>
+                <a href="#squads" class="text-gray-300 hover:text-orange-400 transition-colors">Games & Squads</a>
+                <a href="#roster" class="text-gray-300 hover:text-orange-400 transition-colors">Leadership</a>
+                <a href="#events" class="text-gray-300 hover:text-orange-400 transition-colors">Events</a>
+            </nav>
+
+            <!-- Discord Direct CTA -->
+            <div class="hidden md:flex items-center space-x-4">
+                <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                    class="px-5 py-2.5 rounded-xl font-bold text-sm bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-fire-glow transition-all duration-300 hover:scale-105 active:scale-95 flex items-center gap-2">
+                    <i class="fa-brands fa-discord text-lg"></i> Join Discord
+                </a>
+            </div>
+
+            <!-- Mobile Drawer Button -->
+            <button id="mobileMenuBtn" class="md:hidden text-gray-300 hover:text-white p-2 focus:outline-none"
+                aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars text-2xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden glass-panel border-b border-orange-900/30 px-6 py-6 space-y-4">
+            <a href="#about" class="block text-gray-200 hover:text-orange-400 py-1 font-medium">About Us</a>
+            <a href="#pledge" class="block text-gray-200 hover:text-orange-400 py-1 font-medium">Non-Toxic Pledge</a>
+            <a href="#squads" class="block text-gray-200 hover:text-orange-400 py-1 font-medium">Games & Squads</a>
+            <a href="#roster" class="block text-gray-200 hover:text-orange-400 py-1 font-medium">Leadership</a>
+            <a href="#events" class="block text-gray-200 hover:text-orange-400 py-1 font-medium">Events</a>
+            <div class="pt-4 border-t border-gray-800">
+                <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                    class="w-full py-3 rounded-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-fire-glow flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-discord text-lg"></i> Join Discord
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow z-10 relative">
+
+        <section
+            class="hero-bg relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
+            <div class="max-w-5xl mx-auto text-center space-y-8 relative z-10">
+
+                <!-- Anti-Toxicity Badge -->
+                <div
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border border-orange-500/40 text-xs sm:text-sm font-semibold text-amber-300 mb-2 animate-bounce">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                    <span>100% Safe Haven • Zero Toxicity Guaranteed</span>
+                </div>
+
+                <!-- Hero Flame Crest Logo -->
+                <div class="flex justify-center my-4">
+                    <div class="relative group cursor-pointer">
+                        <div
+                            class="absolute -inset-2 bg-gradient-to-r from-orange-600 via-amber-500 to-red-600 rounded-full blur-2xl opacity-65 group-hover:opacity-100 transition duration-1000">
+                        </div>
+                        <img src="assets/INFBackground.png" alt="INFormal INFerno Crest Insignia"
+                            class="relative w-40 sm:w-52 h-auto object-contain fire-pulse transition-transform duration-500 hover:scale-105">
+                    </div>
+                </div>
+
+                <!-- Main Heading -->
+                <h1
+                    class="heading-font text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-tight">
+                    INFORMAL <span class="gradient-text-fire">INFERNO</span>
+                </h1>
+
+                <!-- Tagline -->
+                <p class="text-xl sm:text-2xl font-bold text-amber-200 max-w-2xl mx-auto tracking-wide">
+                    "Fiery Passion, Zero Toxicity."
+                </p>
+
+                <p class="text-base sm:text-lg text-gray-300 max-w-3xl mx-auto leading-relaxed font-normal">
+                    Step out of toxic lobbies into a community built on sportsmanship, positive energy, and shared
+                    victory. We fuel competitive hype without the flame-wars. All skill levels welcome!
+                </p>
+
+                <!-- Hero Action CTAs -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-lg bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-fire-intense transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3">
+                        <i class="fa-brands fa-discord text-2xl"></i>
+                        <span>Join Discord Community</span>
+                    </a>
+                    <a href="#about"
+                        class="w-full sm:w-auto px-8 py-4 rounded-xl font-semibold text-lg glass-card hover:bg-white/10 text-white border border-orange-500/30 transition-all duration-300 flex items-center justify-center gap-2">
+                        <span>Discover Our Vibe</span>
+                        <i class="fa-solid fa-arrow-down text-orange-400"></i>
+                    </a>
+                </div>
+
+                <!-- Stats Counters -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-12 border-t border-orange-900/30 mt-12">
+                    <div class="p-4 rounded-xl glass-card">
+                        <p class="heading-font text-2xl sm:text-3xl font-extrabold text-amber-400">1,200+</p>
+                        <p class="text-xs sm:text-sm text-gray-400">Friendly Gamers</p>
+                    </div>
+                    <div class="p-4 rounded-xl glass-card">
+                        <p class="heading-font text-2xl sm:text-3xl font-extrabold text-orange-400">0%</p>
+                        <p class="text-xs sm:text-sm text-gray-400">Toxicity Allowed</p>
+                    </div>
+                    <div class="p-4 rounded-xl glass-card">
+                        <p class="heading-font text-2xl sm:text-3xl font-extrabold text-amber-400">15+</p>
+                        <p class="text-xs sm:text-sm text-gray-400">Supported Games</p>
+                    </div>
+                    <div class="p-4 rounded-xl glass-card">
+                        <p class="heading-font text-2xl sm:text-3xl font-extrabold text-red-400">24/7</p>
+                        <p class="text-xs sm:text-sm text-gray-400">Positive LFG Voice</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="about" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-orange-500">Why INFormal INFerno?</h2>
+                <p class="heading-font text-3xl sm:text-5xl font-extrabold text-white">REDEFINING COMMUNITY GAMING</p>
+                <p class="text-gray-400 max-w-2xl mx-auto">We got tired of rage-quitting, trash talk, and elitism.
+                    INFormal INFerno was forged to keep competitive gaming thrilling, inclusive, and fun for everyone.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-orange-500/10 border border-orange-500/30 flex items-center justify-center text-orange-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-heart-circle-check"></i>
+                    </div>
+                    <h3 class="heading-font text-xl font-bold text-white mb-3">Safe & Respectful Haven</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Whether you are testing your first deck or queuing ranked matches, you will always be treated
+                        with respect and positivity.
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-fire-burner"></i>
+                    </div>
+                    <h3 class="heading-font text-xl font-bold text-white mb-3">Mentorship & Deck Help</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Never worry about making mistakes. Our friendly veterans offer constructive strategy tips, combo
+                        guides, and supportive deck building.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card p-8 rounded-2xl relative overflow-hidden group">
+                    <div
+                        class="w-14 h-14 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-2xl mb-6 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="heading-font text-xl font-bold text-white mb-3">Zero-Tolerance Policy</h3>
+                    <p class="text-gray-400 leading-relaxed text-sm">
+                        Active, compassionate staff enforce zero-harassment rules in every voice channel and chat room
+                        so you can game in peace.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="pledge" class="py-20 bg-gradient-to-b from-transparent via-orange-950/20 to-transparent">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="glass-panel rounded-3xl p-8 sm:p-12 border border-orange-500/20 shadow-2xl">
+                    <div class="text-center space-y-4 mb-12">
+                        <span
+                            class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold tracking-wider uppercase">Our
+                            Code of Conduct</span>
+                        <h2 class="heading-font text-3xl sm:text-4xl font-extrabold text-white">THE NON-TOXIC PLEDGE
+                        </h2>
+                        <p class="text-gray-400 max-w-2xl mx-auto text-sm sm:text-base">Every INFormal INFerno warrior
+                            stands by four core pillars before entering battle.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Pillar 1 -->
+                        <div
+                            class="bg-black/40 p-6 rounded-2xl border border-gray-800 hover:border-orange-500/50 transition-all">
+                            <div class="text-orange-500 font-extrabold text-3xl heading-font mb-2">01</div>
+                            <h4 class="text-lg font-bold text-white mb-2">Respect All Players</h4>
+                            <p class="text-xs text-gray-400">Win with modesty, lose with dignity, and treat allies and
+                                opponents with grace.</p>
+                        </div>
+
+                        <!-- Pillar 2 -->
+                        <div
+                            class="bg-black/40 p-6 rounded-2xl border border-gray-800 hover:border-amber-500/50 transition-all">
+                            <div class="text-amber-500 font-extrabold text-3xl heading-font mb-2">02</div>
+                            <h4 class="text-lg font-bold text-white mb-2">Zero Gatekeeping</h4>
+                            <p class="text-xs text-gray-400">Help newcomers learn game mechanics and decks without
+                                judgment or ego.</p>
+                        </div>
+
+                        <!-- Pillar 3 -->
+                        <div
+                            class="bg-black/40 p-6 rounded-2xl border border-gray-800 hover:border-red-500/50 transition-all">
+                            <div class="text-red-500 font-extrabold text-3xl heading-font mb-2">03</div>
+                            <h4 class="text-lg font-bold text-white mb-2">Good Game Spirit</h4>
+                            <p class="text-xs text-gray-400">Celebrate great plays from both sides. No emote spam or
+                                toxic taunting allowed.</p>
+                        </div>
+
+                        <!-- Pillar 4 -->
+                        <div
+                            class="bg-black/40 p-6 rounded-2xl border border-gray-800 hover:border-amber-400/50 transition-all">
+                            <div class="text-amber-400 font-extrabold text-3xl heading-font mb-2">04</div>
+                            <h4 class="text-lg font-bold text-white mb-2">Constructive Vibe</h4>
+                            <p class="text-xs text-gray-400">Offer encouraging feedback and tips. Leave frustration and
+                                blame at the door.</p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Pledge Button -->
+                    <div class="mt-10 text-center">
+                        <button id="pledgeBtn" onclick="togglePledge()"
+                            class="px-8 py-3.5 rounded-xl font-bold text-sm glass-card border border-orange-500/40 text-amber-300 hover:text-white transition-all flex items-center gap-2.5 mx-auto">
+                            <i id="pledgeIcon" class="fa-regular fa-square text-lg"></i>
+                            <span id="pledgeText">I Take the Non-Toxic Gaming Pledge</span>
+                        </button>
+                        <p id="pledgeMessage" class="hidden text-emerald-400 text-sm font-semibold mt-4 animate-pulse">
+                            🔥 Welcome to the Flame! You are ready for positive gaming in INFormal INFerno.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="squads" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+                <div>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-orange-500 mb-2">Active Arenas</h2>
+                    <p class="heading-font text-3xl sm:text-4xl font-extrabold text-white">FEATURED GAMES & SQUADS</p>
+                </div>
+                <p class="text-gray-400 text-sm max-w-md mt-2 md:mt-0">Join dedicated channels, deck help lounges, and
+                    friendly squad sessions every day.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <!-- Game 1: Yu-Gi-Oh! Master Duel -->
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-48 relative overflow-hidden bg-gradient-to-tr from-amber-900 to-indigo-950">
+                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80"
+                            alt="Yu-Gi-Oh! Master Duel"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-70">
+                        <span
+                            class="absolute top-4 right-4 bg-amber-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> Active Duelists
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="heading-font text-xl font-bold text-white mb-2">Yu-Gi-Oh! Master Duel</h3>
+                        <p class="text-xs text-gray-400 mb-4">Deck testing, friendly duels, and combo guides. Learn meta
+                            or rogue strategies without elitism.</p>
+                        <div
+                            class="flex justify-between items-center text-xs font-semibold text-amber-400 pt-3 border-t border-gray-800">
+                            <span><i class="fa-solid fa-layer-group mr-1"></i> 200+ Duelists</span>
+                            <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                                class="hover:underline text-white flex items-center gap-1">Join Squad &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 2: Clash Royale -->
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-48 relative overflow-hidden bg-gradient-to-tr from-blue-900 to-orange-950">
+                        <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80"
+                            alt="Clash Royale"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-70">
+                        <span
+                            class="absolute top-4 right-4 bg-emerald-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> Active Clan
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="heading-font text-xl font-bold text-white mb-2">Clash Royale</h3>
+                        <p class="text-xs text-gray-400 mb-4">Friendly clan wars, deck optimization, and supportive
+                            ladder grinding. Zero emote-BMing!</p>
+                        <div
+                            class="flex justify-between items-center text-xs font-semibold text-orange-400 pt-3 border-t border-gray-800">
+                            <span><i class="fa-solid fa-crown mr-1"></i> 260+ Clashers</span>
+                            <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                                class="hover:underline text-white flex items-center gap-1">Join Squad &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Game 3: General Gaming & Shooters -->
+                <div class="glass-card rounded-2xl overflow-hidden group sm:col-span-2 lg:col-span-1">
+                    <div class="h-48 relative overflow-hidden bg-gradient-to-tr from-red-900 to-slate-900">
+                        <img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80"
+                            alt="General Gaming Lounge"
+                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 opacity-70">
+                        <span
+                            class="absolute top-4 right-4 bg-emerald-500/80 backdrop-blur-md text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span> Active LFG
+                        </span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="heading-font text-xl font-bold text-white mb-2">General Gaming Lounge</h3>
+                        <p class="text-xs text-gray-400 mb-4">Tactical FPS, MOBAs, co-op adventures, and casual party
+                            games with supportive voice lobbies.</p>
+                        <div
+                            class="flex justify-between items-center text-xs font-semibold text-red-400 pt-3 border-t border-gray-800">
+                            <span><i class="fa-solid fa-users mr-1"></i> 500+ Gamers</span>
+                            <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                                class="hover:underline text-white flex items-center gap-1">Join Squad &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="roster"
+            class="py-20 bg-gradient-to-b from-black/50 via-orange-950/15 to-black/50 border-y border-orange-900/30">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-4 mb-12">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-orange-500">Community Founder</h2>
+                    <p class="heading-font text-3xl sm:text-4xl font-extrabold text-white">LEADERSHIP SPOTLIGHT</p>
+                    <p class="text-gray-400 max-w-xl mx-auto text-sm">Meet the founder guiding the vision for a
+                        non-toxic gaming community.</p>
+                </div>
+
+                <div class="flex justify-center">
+
+                    <!-- Leader Spotlight: INF.Raphael -->
+                    <div
+                        class="glass-panel p-8 sm:p-10 rounded-3xl border border-orange-500/50 flex flex-col items-center text-center relative group max-w-lg w-full shadow-fire-intense">
+
+                        <div
+                            class="absolute -top-3 bg-gradient-to-r from-orange-600 via-amber-600 to-red-600 text-white font-extrabold text-xs uppercase px-5 py-1 rounded-full tracking-widest shadow-md">
+                            Founder & Community Leader
+                        </div>
+
+                        <!-- Fiery Glowing Aura Container -->
+                        <!-- Replace the leader avatar block in index.html with this -->
+                        <div class="relative my-4 flex justify-center items-center">
+                            <div class="flame-aura">
+                                <div
+                                    class="relative w-44 h-44 rounded-full border-2 border-amber-500/80 shadow-fire-glow z-10 bg-[#07070a] flex items-center justify-center p-4">
+                                    <img src="assets/Background.png" alt="INF.Raphael Insignia"
+                                        class="max-w-full max-h-full object-contain filter drop-shadow-[0_0_12px_rgba(255,85,0,0.6)]">
+                                </div>
+                            </div>
+                        </div>
+
+                        <h3 class="heading-font text-3xl font-black text-white">INF.Raphael</h3>
+                        <p class="text-sm text-amber-400 font-semibold mb-4">Founder & Head of Community Strategy</p>
+
+                        <p class="text-sm text-gray-300 leading-relaxed mb-6">
+                            "I created INFormal INFerno to give every gamer a welcoming hearth—where you can play hard,
+                            duel with honor, clash together, and never worry about toxicity or rage."
+                        </p>
+
+                        <div class="flex flex-wrap justify-center gap-2 text-gray-300 text-xs">
+                            <span
+                                class="px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/30 font-medium">Yu-Gi-Oh!
+                                Duelist</span>
+                            <span
+                                class="px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/30 font-medium">Clash
+                                Captain</span>
+                            <span
+                                class="px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/30 font-medium">Tactical
+                                Gaming</span>
+                            <span
+                                class="px-3 py-1.5 rounded-lg bg-orange-500/10 border border-orange-500/30 font-medium">Community
+                                Mentor</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="text-center space-y-4 mb-16">
+                <h2 class="text-xs font-bold uppercase tracking-widest text-orange-500">Weekly Gatherings</h2>
+                <p class="heading-font text-3xl sm:text-4xl font-extrabold text-white">COMMUNITY EVENTS</p>
+                <p class="text-gray-400 max-w-xl mx-auto text-sm">Jump into weekly non-toxic tournaments, deck building
+                    labs, or casual game nights.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                <!-- Event 1 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-l-4 border-l-orange-500">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span
+                                class="text-xs font-bold text-orange-400 bg-orange-500/10 px-3 py-1 rounded-full">FRIDAY
+                                • 8 PM EST</span>
+                            <span class="text-xs text-gray-400"><i class="fa-solid fa-headset mr-1"></i> Voice
+                                Lounge</span>
+                        </div>
+                        <h3 class="heading-font text-lg font-bold text-white mb-2">Friday Casual Game Night</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">Party games, Jackbox, and casual lobbies.
+                            Zero competitive stress, just pure fun and laughs.</p>
+                    </div>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="w-full py-2.5 rounded-lg text-xs font-bold bg-white/5 hover:bg-orange-500/20 text-orange-300 border border-orange-500/30 transition-all text-center block">
+                        RSVP on Discord
+                    </a>
+                </div>
+
+                <!-- Event 2 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-l-4 border-l-amber-500">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span
+                                class="text-xs font-bold text-amber-400 bg-amber-500/10 px-3 py-1 rounded-full">SATURDAY
+                                • 3 PM EST</span>
+                            <span class="text-xs text-gray-400"><i class="fa-solid fa-layer-group mr-1"></i> Strategy
+                                Room</span>
+                        </div>
+                        <h3 class="heading-font text-lg font-bold text-white mb-2">Master Duel & Clash Deck Workshop
+                        </h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">Deck-building sessions with veteran
+                            members to optimize your deck combos and battle strategies.</p>
+                    </div>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="w-full py-2.5 rounded-lg text-xs font-bold bg-white/5 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition-all text-center block">
+                        RSVP on Discord
+                    </a>
+                </div>
+
+                <!-- Event 3 -->
+                <div class="glass-card p-6 rounded-2xl flex flex-col justify-between border-l-4 border-l-red-500">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-xs font-bold text-red-400 bg-red-500/10 px-3 py-1 rounded-full">SUNDAY • 4
+                                PM EST</span>
+                            <span class="text-xs text-gray-400"><i class="fa-solid fa-trophy mr-1"></i> Friendly
+                                Arena</span>
+                        </div>
+                        <h3 class="heading-font text-lg font-bold text-white mb-2">Sportsmanship Showdown</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">Friendly community matches with awards for
+                            Best Sportsmanship and Team Hype!</p>
+                    </div>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="w-full py-2.5 rounded-lg text-xs font-bold bg-white/5 hover:bg-red-500/20 text-red-300 border border-red-500/30 transition-all text-center block">
+                        RSVP on Discord
+                    </a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
+            <div
+                class="glass-panel p-10 sm:p-16 rounded-3xl relative overflow-hidden border border-orange-500/30 shadow-fire-intense">
+
+                <!-- Background Ambient Lights -->
+                <div
+                    class="absolute -top-24 -left-24 w-72 h-72 bg-orange-600/30 rounded-full blur-3xl pointer-events-none">
+                </div>
+                <div
+                    class="absolute -bottom-24 -right-24 w-72 h-72 bg-red-600/30 rounded-full blur-3xl pointer-events-none">
+                </div>
+
+                <img src="assets/INFBackground.png" alt="Insignia Logo" class="w-24 h-auto mx-auto mb-6 fire-pulse">
+
+                <h2 class="heading-font text-3xl sm:text-5xl font-black text-white mb-4">IGNITE YOUR GAMING EXPERIENCE
+                </h2>
+                <p class="text-gray-300 max-w-2xl mx-auto mb-8 text-base sm:text-lg">
+                    Step into a friendly gaming haven where wins are celebrated, mistakes are learning moments, and
+                    toxicity is banished.
+                </p>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="w-full sm:w-auto px-8 py-4 rounded-xl font-bold text-base bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white shadow-fire-glow transition-all duration-300 hover:scale-105 inline-flex items-center justify-center">
+                        <i class="fa-brands fa-discord text-xl mr-2.5"></i> Join Official Discord Server
+                    </a>
+                </div>
+
+                <!-- Social Links -->
+                <div
+                    class="flex justify-center items-center gap-6 mt-10 pt-8 border-t border-gray-800/80 text-gray-400">
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-orange-400 text-2xl transition-colors" title="Discord"><i
+                            class="fa-brands fa-discord"></i></a>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-purple-400 text-2xl transition-colors" title="Twitch"><i
+                            class="fa-brands fa-twitch"></i></a>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-red-500 text-2xl transition-colors" title="YouTube"><i
+                            class="fa-brands fa-youtube"></i></a>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-blue-400 text-2xl transition-colors" title="Steam Group"><i
+                            class="fa-brands fa-steam"></i></a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="glass-panel border-t border-orange-900/30 py-10 z-10 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+
+            <div
+                class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400 border-b border-gray-800/80 pb-6">
+                <div class="flex items-center gap-3">
+                    <img src="assets/INFBackground.png" alt="INF Logo" class="h-6 w-auto">
+                    <span>© 2026 INFormal INFerno Gaming Community. All rights reserved.</span>
+                </div>
+                <div class="flex gap-6">
+                    <a href="#pledge" class="hover:text-orange-400 transition-colors">Code of Conduct</a>
+                    <a href="#about" class="hover:text-orange-400 transition-colors">About Us</a>
+                    <a href="https://discord.gg/GePUhkaTW" target="_blank" rel="noopener noreferrer"
+                        class="hover:text-orange-400 transition-colors">Join Discord</a>
+                </div>
+            </div>
+
+            <!-- PROMINENT DEVELOPER CREDIT BADGE -->
+            <div
+                class="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 rounded-2xl glass-card border border-emerald-500/40 bg-gradient-to-r from-emerald-950/30 via-black/50 to-orange-950/30 shadow-fiverr-glow">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-emerald-500/20 border border-emerald-500/50 flex items-center justify-center text-emerald-400 text-2xl font-bold shadow-lg">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-400 font-medium uppercase tracking-wider">Website Crafted &
+                            Developed By</p>
+                        <h4 class="text-base font-extrabold text-white tracking-wide flex items-center gap-2">
+                            <span>Mohamed Elkhalfy</span>
+                            <span
+                                class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-semibold">Pro
+                                Web Developer</span>
+                        </h4>
+                    </div>
+                </div>
+
+                <a href="https://www.fiverr.com/s/wbbW9pA" target="_blank" rel="noopener noreferrer"
+                    class="w-full sm:w-auto px-6 py-3 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white shadow-fiverr-glow transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2.5 group">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-300 animate-ping"></span>
+                    <span>Order / Hire on Fiverr</span>
+                    <i
+                        class="fa-solid fa-arrow-up-right-from-square text-xs group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform"></i>
+                </a>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- External JavaScript -->
+    <script src="app.js"></script>
+</body>
+
+</html>
